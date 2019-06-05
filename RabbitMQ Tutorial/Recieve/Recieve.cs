@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Send
+namespace Recieve
 {
-    class Program
+    class Recieve
     {
         static void Main(string[] args)
         {
