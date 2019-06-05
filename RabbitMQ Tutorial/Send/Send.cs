@@ -47,6 +47,12 @@ namespace Send
             _connection.Close();
         }
 
+        //Default destructor
+        ~Send()
+        {
+            CloseConnection();
+        }
+
         public static void Main(string[] args)
         {
             Send sender = new Send();
@@ -59,7 +65,7 @@ namespace Send
                 input = Console.ReadLine();
 
             } while (input != "END");
-            sender.CloseConnection();
+            //sender.CloseConnection();  <-- you should always call this to be safe, but also added default destructor
         }
     }
 }
