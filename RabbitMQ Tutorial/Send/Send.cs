@@ -11,37 +11,55 @@ namespace Send
     {
         private string _hostname { get; set; } = "localhost";
 
-        public void Initialize()
+        private string _exchange = "";
+
+        private string _queue = "";
+
+        private IConnection _connection;
+
+        private IModel _channel;
+
+        public void Initialize(string queueName)
         {
             //Create a connection to the server
             var factory = new ConnectionFactory();
             factory.HostName = this._hostname;
+            _connection = factory.CreateConnection();
+            _channel = _connection.CreateModel();
+            _queue = queueName;
 
-            //Using statement will autodispose of the connection and channel when they are finished
-            using (var connection = factory.CreateConnection())
-            {
-                using (var channel = connection.CreateModel())
-                {
-                    channel.QueueDeclare("hello", false, false, false, null);
+            //Initialize queue
+            _channel.QueueDeclare(queueName, false, false, false, null);
+        }
 
-                    //This section should be refactored into its own method later
-                    string message = "Hello, World!";
-                    var body = Encoding.UTF8.GetBytes(message); //Message Payload
+        public void SendMessage(string msg)
+        {
+            var body = Encoding.UTF8.GetBytes(msg); //Message Payload
 
-                    channel.BasicPublish(string.Empty, "hello", null, body); //Specify an exchange, or use an empty string for none. Use the name of the queue as the routing key.
+            _channel.BasicPublish(_exchange, _queue, null, body); //Specify an exchange, or use an empty string for none. Use the name of the queue as the routing key.
 
-                    Console.WriteLine(" [x] Sent {0}", message);   
-                }
-            }
+            Console.WriteLine(" [x] Sent {0}", msg);
+        }
+
+        public void CloseConnection()
+        {
+            _channel.Close();
+            _connection.Close();
         }
 
         public static void Main(string[] args)
         {
             Send sender = new Send();
-            sender.Initialize();
+            sender.Initialize("hello");
+            Console.WriteLine("Press [Enter] to send hello, or type 'END' to exit");
+            string input = "";
+            do
+            {
+                sender.SendMessage("Hello, World!");
+                input = Console.ReadLine();
 
-            Console.WriteLine("Press [Enter] to exit.");
-            Console.ReadLine();
+            } while (input != "END");
+            sender.CloseConnection();
         }
     }
 }
