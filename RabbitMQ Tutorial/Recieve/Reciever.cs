@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
@@ -19,21 +20,46 @@ namespace Recieve
         protected IModel _channel;
         public IBasicProperties _properties { get; protected set; }
 
-
-        public void Initialize(string queueName, bool durable)
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public Reciever()
         {
             //Create a connection to the server
             var factory = new ConnectionFactory();
             factory.HostName = this._hostname;
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _properties = _channel.CreateBasicProperties();
+        }
+
+        /// <summary>
+        /// Constructs the class with an already existing connection and model
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="model"></param>
+        public Reciever(IConnection connection, IModel model)
+        {
+            _connection = connection;
+            _channel = model;
+        }
+
+        public void Initialize(
+           string routingKey = "",
+           bool durable = false,
+           bool exclusive = true,
+           bool autoDelete = true,
+           IDictionary<string, object> args = null)
+        {
+            if(_properties == null)
+                _properties = _channel.CreateBasicProperties();
+
+            _queue = routingKey;
 
             //Tell RabbitMQ not to give any more than one message to a worker at a time
             _channel.BasicQos(0, 1, false);
 
             //Note, if a queue with these settings is already declared, RabbitMQ will not create a new one
-            _channel.QueueDeclare(queueName, durable, false, false, null);
+            _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
 
             var consumer = new EventingBasicConsumer(_channel);
 
@@ -82,9 +108,9 @@ namespace Recieve
         {
             Reciever reciever = new Reciever();
             Console.WriteLine("Type [END] and press enter to exit.");
-            reciever.Initialize("hello", true);
+            reciever.Initialize("hello", false, false, false);
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
         
     }

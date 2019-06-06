@@ -10,35 +10,49 @@ namespace Send
     public class Sender
     {
         public string _hostname { get; set; } = "localhost";
-
-        private string _exchange;
-
-        private string _queue;
-
-        private IConnection _connection;
-
-        private IModel _channel;
+        public string _exchange { get; set; } = "";
         public IBasicProperties _properties { get; protected set; }
 
+        private string _queue;
+        private IConnection _connection;
+        private IModel _channel;
+
         /// <summary>
-        /// Initializes the sender - uses default exchange with non-durable, exclusive, auto-deleting queue if no parameters are specified
+        /// Default constructor
         /// </summary>
-        public void Initialize(
-            string exchange = "",
-            string routingKey = "",
-            bool durable = false,
-            bool exclusive = true,
-            bool autoDelete = true,
-            IDictionary<string, object> args = null)
+        public Sender()
         {
             //Create a connection to the server
             var factory = new ConnectionFactory();
             factory.HostName = this._hostname;
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _properties = _channel.CreateBasicProperties();
+        }
+
+        /// <summary>
+        /// Constructs the class with an already existing connection and model
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="model"></param>
+        public Sender(IConnection connection, IModel model)
+        {
+            _connection = connection;
+            _channel = model;
+        }
+
+        /// <summary>
+        /// Initializes the sender - uses default exchange with non-durable, exclusive, auto-deleting queue if no parameters are specified
+        /// </summary>
+        public void Initialize(
+            string routingKey = "",
+            bool durable = false,
+            bool exclusive = true,
+            bool autoDelete = true,
+            IDictionary<string, object> args = null)
+        {
+            if(_properties == null)
+                _properties = _channel.CreateBasicProperties();
             _queue = routingKey;
-            _exchange = exchange;
 
             //Initialize queue
             _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
@@ -72,7 +86,7 @@ namespace Send
         public static void Main(string[] args)
         {
             Sender sender = new Sender();
-            sender.Initialize("task_queue", true);
+            sender.Initialize("task_queue", true, false, false);
             sender.SendMessage(ParseMessage(args));
             
             /*Console.WriteLine("Press [Enter] to send hello, or type 'END' to exit");
