@@ -34,9 +34,9 @@ namespace Recieve
         {
             Worker worker = new Worker();
             Console.WriteLine("Type [END] and press enter to exit.");
-            worker.Initialize("task_queue");
+            worker.Initialize("task_queue", true);
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
     }

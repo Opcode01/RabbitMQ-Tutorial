@@ -18,9 +18,9 @@ namespace Send
         private IConnection _connection;
 
         private IModel _channel;
-        public IBasicProperties _properties { get; set; }
+        public IBasicProperties _properties { get; protected set; }
 
-        public void Initialize(string queueName)
+        public void Initialize(string queueName, bool durable)
         {
             //Create a connection to the server
             var factory = new ConnectionFactory();
@@ -31,7 +31,7 @@ namespace Send
             _queue = queueName;
 
             //Initialize queue
-            _channel.QueueDeclare(queueName, false, false, false, null);
+            _channel.QueueDeclare(queueName, durable, false, false, null);
         }
 
         public void SendMessage(string msg)
@@ -58,7 +58,7 @@ namespace Send
         public static void Main(string[] args)
         {
             Sender sender = new Sender();
-            sender.Initialize("task_queue");
+            sender.Initialize("task_queue", true);
             sender.SendMessage(ParseMessage(args));
             
             /*Console.WriteLine("Press [Enter] to send hello, or type 'END' to exit");

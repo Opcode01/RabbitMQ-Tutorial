@@ -17,17 +17,23 @@ namespace Recieve
         protected IConnection _connection;
 
         protected IModel _channel;
+        public IBasicProperties _properties { get; protected set; }
 
-        public void Initialize(string queueName)
+
+        public void Initialize(string queueName, bool durable)
         {
             //Create a connection to the server
             var factory = new ConnectionFactory();
             factory.HostName = this._hostname;
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
+            _properties = _channel.CreateBasicProperties();
+
+            //Tell RabbitMQ not to give any more than one message to a worker at a time
+            _channel.BasicQos(0, 1, false);
 
             //Note, if a queue with these settings is already declared, RabbitMQ will not create a new one
-            _channel.QueueDeclare(queueName, false, false, false, null);
+            _channel.QueueDeclare(queueName, durable, false, false, null);
 
             var consumer = new EventingBasicConsumer(_channel);
 
@@ -76,7 +82,7 @@ namespace Recieve
         {
             Reciever reciever = new Reciever();
             Console.WriteLine("Type [END] and press enter to exit.");
-            reciever.Initialize("hello");
+            reciever.Initialize("hello", true);
 
             Console.ReadLine();
         }
