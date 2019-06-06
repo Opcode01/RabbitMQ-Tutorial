@@ -20,6 +20,7 @@ namespace Recieve
 
             int dots = message.Split('.').Length - 1;
             DoWork(dots);
+            _channel.BasicAck(e.DeliveryTag, false);
         }
 
         private void DoWork(int work)

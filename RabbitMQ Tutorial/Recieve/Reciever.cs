@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
@@ -16,9 +14,9 @@ namespace Recieve
 
         private string _input = "";
 
-        private IConnection _connection;
+        protected IConnection _connection;
 
-        private IModel _channel;
+        protected IModel _channel;
 
         public void Initialize(string queueName)
         {
@@ -36,13 +34,20 @@ namespace Recieve
             //Create a callback function to execute when a message is recieved
             consumer.Received += OnMessageRecieved;
             Console.WriteLine("Waiting for messages...");
-            BeginLoop(consumer);
-           
+
+            //Run this in a separate thread so we can later close it out from code (using .NET tasks)
+            Task.Factory.StartNew(() => BeginLoop(consumer));
+            
         }
 
         public void CloseConnection()
         {
-            _input = "END";
+            if (!_connection.IsOpen)
+            {
+                return;
+            }
+
+            _input = "END";     //Needed to easily break out of the while loop in the case we close this from code
             _channel.Close();
             _connection.Close();
             Console.WriteLine("Connection closed.");
@@ -52,7 +57,7 @@ namespace Recieve
         {
             do
             {
-                _channel.BasicConsume(_queue, true, consumer);
+                _channel.BasicConsume(_queue, false, consumer);
                 _input = Console.ReadLine();
 
             } while (_input != "END");
@@ -64,6 +69,7 @@ namespace Recieve
             var body = e.Body;
             var message = Encoding.UTF8.GetString(body);
             Console.WriteLine(" [y] Recieved {0}", message);
+            _channel.BasicAck(e.DeliveryTag, false);
         }
 
         static void Main(string[] args)
