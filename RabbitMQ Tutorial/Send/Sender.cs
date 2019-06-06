@@ -11,16 +11,25 @@ namespace Send
     {
         public string _hostname { get; set; } = "localhost";
 
-        private string _exchange = "";
+        private string _exchange;
 
-        private string _queue = "";
+        private string _queue;
 
         private IConnection _connection;
 
         private IModel _channel;
         public IBasicProperties _properties { get; protected set; }
 
-        public void Initialize(string queueName, bool durable)
+        /// <summary>
+        /// Initializes the sender - uses default exchange with non-durable, exclusive, auto-deleting queue if no parameters are specified
+        /// </summary>
+        public void Initialize(
+            string exchange = "",
+            string routingKey = "",
+            bool durable = false,
+            bool exclusive = true,
+            bool autoDelete = true,
+            IDictionary<string, object> args = null)
         {
             //Create a connection to the server
             var factory = new ConnectionFactory();
@@ -28,12 +37,17 @@ namespace Send
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _properties = _channel.CreateBasicProperties();
-            _queue = queueName;
+            _queue = routingKey;
+            _exchange = exchange;
 
             //Initialize queue
-            _channel.QueueDeclare(queueName, durable, false, false, null);
+            _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
         }
 
+        /// <summary>
+        /// Sends a message
+        /// </summary>
+        /// <param name="msg"></param>
         public void SendMessage(string msg)
         {
             var body = Encoding.UTF8.GetBytes(msg); //Message Payload
