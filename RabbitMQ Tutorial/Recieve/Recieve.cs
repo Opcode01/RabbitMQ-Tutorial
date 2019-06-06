@@ -11,35 +11,52 @@ namespace Recieve
     class Recieve
     {
         private string _hostname { get; set; } = "localhost";
-        public void Initialize()
+
+        private string _queue = "";
+
+        private string _input = "";
+
+        private IConnection _connection;
+
+        private IModel _channel;
+
+        public void Initialize(string queueName)
         {
             //Create a connection to the server
             var factory = new ConnectionFactory();
             factory.HostName = this._hostname;
+            _connection = factory.CreateConnection();
+            _channel = _connection.CreateModel();
 
-            //Using statement will autodispose of the connection and channel when they are finished
-            using (var connection = factory.CreateConnection())
+            //Note, if a queue with these settings is already declared, RabbitMQ will not create a new one
+            _channel.QueueDeclare(queueName, false, false, false, null);
+
+            var consumer = new EventingBasicConsumer(_channel);
+
+            //Create a callback function to execute when a message is recieved
+            consumer.Received += OnMessageRecieved;
+            Console.WriteLine("Waiting for messages...");
+            BeginLoop(consumer);
+           
+        }
+
+        public void CloseConnection()
+        {
+            _input = "END";
+            _channel.Close();
+            _connection.Close();
+            Console.WriteLine("Connection closed.");
+        }
+
+        private void BeginLoop(EventingBasicConsumer consumer)
+        {
+            do
             {
-                using (var channel = connection.CreateModel())
-                {
-                    //Note, if a queue with these settings is already declared, RabbitMQ will not create a new one
-                    channel.QueueDeclare("hello", false, false, false, null);
+                _channel.BasicConsume("hello", true, consumer);
+                _input = Console.ReadLine();
 
-                    var consumer = new EventingBasicConsumer(channel);
-
-                    //Create a callback function to execute when a message is recieved
-                    consumer.Received += OnMessageRecieved;
-
-                    string ui = "";
-                    Console.WriteLine("Waiting for messages...");
-                    do
-                    {
-                        channel.BasicConsume("hello", true, consumer);
-                        ui = Console.ReadLine();
-
-                    } while (ui != "END");
-                }
-            }
+            } while (_input != "END");
+            CloseConnection();
         }
 
         private void OnMessageRecieved(object sender, BasicDeliverEventArgs e)
@@ -53,7 +70,10 @@ namespace Recieve
         {
             Recieve reciever = new Recieve();
             Console.WriteLine("Type [END] and press enter to exit.");
-            reciever.Initialize();
+            reciever.Initialize("hello");
+
+            Console.ReadLine();
         }
     }
+        
 }

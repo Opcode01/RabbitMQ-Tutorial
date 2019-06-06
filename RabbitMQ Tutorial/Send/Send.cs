@@ -45,12 +45,7 @@ namespace Send
         {
             _channel.Close();
             _connection.Close();
-        }
-
-        //Default destructor
-        ~Send()
-        {
-            CloseConnection();
+            Console.WriteLine("Connection Closed.");
         }
 
         public static void Main(string[] args)
@@ -61,11 +56,11 @@ namespace Send
             string input = "";
             do
             {
-                sender.SendMessage("Hello, World!");
                 input = Console.ReadLine();
+                sender.SendMessage(input);
 
             } while (input != "END");
-            //sender.CloseConnection();  <-- you should always call this to be safe, but also added default destructor
+            sender.CloseConnection(); 
         }
     }
 }
