@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Send;
+using Recieve;
+using RabbitMQ.Client;
 
 namespace RabbitMQ_Tutorial
 {
@@ -10,6 +8,16 @@ namespace RabbitMQ_Tutorial
     {
         static void Main(string[] args)
         {
+            var sender = new Sender();
+            sender.Initialize("task_queue");
+            sender._properties.Persistent = true;
+
+            var worker = new Worker();
+            worker.Initialize("task_queue");
+
+            sender.SendMessage(GetMessage(args));
         }
+
+        
     }
 }

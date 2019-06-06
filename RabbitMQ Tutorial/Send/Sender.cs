@@ -7,9 +7,9 @@ using RabbitMQ.Client;
 
 namespace Send
 {
-    class Send
+    public class Sender
     {
-        private string _hostname { get; set; } = "localhost";
+        public string _hostname { get; set; } = "localhost";
 
         private string _exchange = "";
 
@@ -18,6 +18,7 @@ namespace Send
         private IConnection _connection;
 
         private IModel _channel;
+        public IBasicProperties _properties { get; set; }
 
         public void Initialize(string queueName)
         {
@@ -26,6 +27,7 @@ namespace Send
             factory.HostName = this._hostname;
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
+            _properties = _channel.CreateBasicProperties();
             _queue = queueName;
 
             //Initialize queue
@@ -36,7 +38,7 @@ namespace Send
         {
             var body = Encoding.UTF8.GetBytes(msg); //Message Payload
 
-            _channel.BasicPublish(_exchange, _queue, null, body); //Specify an exchange, or use an empty string for none. Use the name of the queue as the routing key.
+            _channel.BasicPublish(_exchange, _queue, _properties, body); //Specify an exchange, or use an empty string for none. Use the name of the queue as the routing key.
 
             Console.WriteLine(" [x] Sent {0}", msg);
         }
@@ -48,11 +50,18 @@ namespace Send
             Console.WriteLine("Connection Closed.");
         }
 
+        private static string ParseMessage(string[] args)
+        {
+            return ((args.Length > 0) ? string.Join(" ", args) : "Hello World!");
+        }
+
         public static void Main(string[] args)
         {
-            Send sender = new Send();
-            sender.Initialize("hello");
-            Console.WriteLine("Press [Enter] to send hello, or type 'END' to exit");
+            Sender sender = new Sender();
+            sender.Initialize("task_queue");
+            sender.SendMessage(ParseMessage(args));
+            
+            /*Console.WriteLine("Press [Enter] to send hello, or type 'END' to exit");
             string input = "";
             do
             {
@@ -60,6 +69,7 @@ namespace Send
                 sender.SendMessage(input);
 
             } while (input != "END");
+            */
             sender.CloseConnection(); 
         }
     }

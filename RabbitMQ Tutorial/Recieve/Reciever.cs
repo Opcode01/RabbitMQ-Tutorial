@@ -8,7 +8,7 @@ using RabbitMQ.Client.Events;
 
 namespace Recieve
 {
-    class Recieve
+    public class Reciever
     {
         private string _hostname { get; set; } = "localhost";
 
@@ -52,14 +52,14 @@ namespace Recieve
         {
             do
             {
-                _channel.BasicConsume("hello", true, consumer);
+                _channel.BasicConsume(_queue, true, consumer);
                 _input = Console.ReadLine();
 
             } while (_input != "END");
             CloseConnection();
         }
 
-        private void OnMessageRecieved(object sender, BasicDeliverEventArgs e)
+        public virtual void OnMessageRecieved(object sender, BasicDeliverEventArgs e)
         {
             var body = e.Body;
             var message = Encoding.UTF8.GetString(body);
@@ -68,12 +68,13 @@ namespace Recieve
 
         static void Main(string[] args)
         {
-            Recieve reciever = new Recieve();
+            Reciever reciever = new Reciever();
             Console.WriteLine("Type [END] and press enter to exit.");
             reciever.Initialize("hello");
 
             Console.ReadLine();
         }
+        
     }
         
 }

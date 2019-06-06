@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0D1DCBD0-4E9B-4038-84E7-22AD2F47A2F0}</ProjectGuid>
+    <ProjectGuid>{7BD7ED84-2BDF-48EC-8BF7-68317CA3FE34}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Recieve</RootNamespace>
-    <AssemblyName>Recieve</AssemblyName>
+    <RootNamespace>RabbitMQ_Tutorial</RootNamespace>
+    <AssemblyName>RabbitMQ Tutorial</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,9 +32,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,11 +43,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Reciever.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NewTask\NewTask.csproj">
+      <Project>{bcb75e0e-03fd-43dc-a92d-59471ca84ccc}</Project>
+      <Name>NewTask</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Recieve\Recieve.csproj">
+      <Project>{0d1dcbd0-4e9b-4038-84e7-22ad2f47a2f0}</Project>
+      <Name>Recieve</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Send\Send.csproj">
+      <Project>{9dadfe9f-d459-420a-9590-d94ed0eb6471}</Project>
+      <Name>Send</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Worker\Worker.csproj">
+      <Project>{479d6a94-8f39-482d-acee-b980f6ff5777}</Project>
+      <Name>Worker</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="RabbitMQ.Client">
