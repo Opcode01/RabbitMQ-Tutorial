@@ -5,12 +5,12 @@ using Util;
 
 namespace PublishLog
 {
-    class PublishLog
+    public class Logger
     {
         public string _hostname { get; set; } = "localhost";
         private Sender sender;
 
-        public PublishLog()
+        public Logger()
         {
 
         }
@@ -69,7 +69,7 @@ namespace PublishLog
             if (!TestArgs(args))
                 return;
 
-            var logPublisher = new PublishLog();
+            var logPublisher = new Logger();
             logPublisher.Initialize(args[0]);
             var message = args[1];
 

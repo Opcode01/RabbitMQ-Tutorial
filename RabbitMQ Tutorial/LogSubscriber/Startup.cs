@@ -60,6 +60,7 @@ namespace LogSubscriber
             {
                 sub.CloseConnection();
             }
+            return;
         }
     }
 }

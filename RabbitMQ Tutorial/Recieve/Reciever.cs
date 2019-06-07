@@ -8,7 +8,7 @@ namespace Recieve
 {
     public class Reciever
     {
-        private string _hostname { get; set; } = "localhost";
+        protected string _hostname { get; set; } = "localhost";
 
         public string _queue { get; private set; }
 
@@ -90,7 +90,7 @@ namespace Recieve
         {
             var body = e.Body;
             var message = Encoding.UTF8.GetString(body);
-            Console.WriteLine(" [y] Recieved {0}", message);
+            Console.WriteLine(" [{0}] Recieved {1}", sender, message);
             _channel.BasicAck(e.DeliveryTag, false);
         }
         

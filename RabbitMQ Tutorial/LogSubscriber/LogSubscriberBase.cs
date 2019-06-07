@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 using Recieve;
-using Util;
 
 namespace LogSubscriber
 {
@@ -13,7 +7,7 @@ namespace LogSubscriber
     {
         protected IModel _channel;
 
-        protected Reciever _reciever;
+        protected LogReciever _reciever;
 
         protected string _exchange_name;
 
@@ -36,7 +30,7 @@ namespace LogSubscriber
             _channel.ExchangeDeclare(_exchange_name, exchange_type);
 
             //Initialize Reciever
-            _reciever = new Reciever(connection, _channel);
+            _reciever = new LogReciever(connection, _channel);
             _reciever.Initialize();
 
             BindQueue(_exchange_name);
