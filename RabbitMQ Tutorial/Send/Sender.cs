@@ -12,8 +12,7 @@ namespace Send
         public string _hostname { get; set; } = "localhost";
         public string _exchange { get; set; } = "";
         public IBasicProperties _properties { get; protected set; }
-
-        private string _queue;
+        public string _queue { get; private set; }
         private IConnection _connection;
         private IModel _channel;
 
@@ -52,10 +51,17 @@ namespace Send
         {
             if(_properties == null)
                 _properties = _channel.CreateBasicProperties();
-            _queue = routingKey;
-
-            //Initialize queue
-            _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
+               
+            //Initialize Queue
+            if (routingKey == "")
+            {
+                _queue = _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args).QueueName; //Save the name of auto-generated queue
+            }
+            else
+            {
+                _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
+                _queue = routingKey;
+            }
         }
 
         /// <summary>

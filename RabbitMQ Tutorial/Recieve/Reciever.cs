@@ -11,7 +11,7 @@ namespace Recieve
     {
         private string _hostname { get; set; } = "localhost";
 
-        private string _queue = "";
+        public string _queue { get; private set; }
 
         private string _input = "";
 
@@ -53,13 +53,20 @@ namespace Recieve
             if(_properties == null)
                 _properties = _channel.CreateBasicProperties();
 
-            _queue = routingKey;
-
-            //Tell RabbitMQ not to give any more than one message to a worker at a time
+            //Tell RabbitMQ not to give any more than one message to a reciever at a time
             _channel.BasicQos(0, 1, false);
 
             //Note, if a queue with these settings is already declared, RabbitMQ will not create a new one
-            _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
+            //Initialize Queue
+            if (routingKey == "")
+            {
+                _queue = _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args).QueueName; //Save the name of auto-generated queue
+            }
+            else
+            {
+                _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
+                _queue = routingKey;
+            }
 
             var consumer = new EventingBasicConsumer(_channel);
 
