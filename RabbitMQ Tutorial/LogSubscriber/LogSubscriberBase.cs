@@ -41,5 +41,10 @@ namespace LogSubscriber
 
             BindQueue(_exchange_name);
         }
+
+        public void CloseConnection()
+        {
+            _reciever.CloseConnection();
+        }
     }
 }

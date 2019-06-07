@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RabbitMQ.Client;
 using Recieve;
 
@@ -8,13 +9,57 @@ namespace LogSubscriber
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Type [END] and press enter to exit.");
-            var infoSubscriber = new InfoSubscriber();
-            infoSubscriber.Initialize("direct_logs", "direct");
+        
+            if (args.Length <= 0)
+            {
+                Console.WriteLine("Please specity parameters.");
+                return;
+            }
+            Console.WriteLine("Type 'END' and press [ENTER] to exit.");
 
-            var warningSubscriber = new WarningSubscriber();
-            warningSubscriber.Initialize("direct_logs", "direct");
+            List<ILogSubscriber> subscribers = new List<ILogSubscriber>();
+
+            foreach (var param in args)
+            {
+                if (param == "info")
+                {
+                    var infoSubscriber = new InfoSubscriber();
+                    infoSubscriber.Initialize("direct_logs", "direct");
+                    subscribers.Add(infoSubscriber);
+                }
+                else if (param == "warning")
+                {
+                    var warningSubscriber = new WarningSubscriber();
+                    warningSubscriber.Initialize("direct_logs", "direct");
+                    subscribers.Add(warningSubscriber);
+                }
+                else if (param == "error")
+                {
+                    var errorSubscriber = new ErrorSubscriber();
+                    errorSubscriber.Initialize("direct_logs", "direct");
+                    subscribers.Add(errorSubscriber);
+                }
+                else
+                {
+                    Console.WriteLine("Command parameter not recognized. Usage - ");
+                    Console.WriteLine("\t info - starts an info log listener");
+                    Console.WriteLine("\t warning - starts a warning log listener");
+                    Console.WriteLine("\t error - starts an error log listener");
+                }
+            }
+
+            //Wait for user to end
+            string ui = "";
+            while (ui != "END")
+            {
+                ui = Console.ReadLine();
+            }
+
+            //Close all connections
+            foreach(var sub in subscribers)
+            {
+                sub.CloseConnection();
+            }
         }
-
     }
 }

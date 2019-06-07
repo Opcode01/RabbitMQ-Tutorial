@@ -31,7 +31,11 @@ namespace Recieve
             Console.WriteLine("Type [END] and press enter to exit.");
             worker.Initialize("task_queue", true, false, false);
 
-            //Console.ReadLine();
+            string ui = "";
+            while (ui != "END")
+            {
+                ui = Console.ReadLine();
+            }
         }
 
     }

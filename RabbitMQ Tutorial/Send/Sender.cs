@@ -85,20 +85,28 @@ namespace Send
 
         public static void Main(string[] args)
         {
-            Sender sender = new Sender();
-            sender.Initialize("task_queue", true, false, false);
-            sender.SendMessage(UtilMethods.ParseMessage(args));
-            
-            /*Console.WriteLine("Press [Enter] to send hello, or type 'END' to exit");
-            string input = "";
-            do
-            {
-                input = Console.ReadLine();
-                sender.SendMessage(input);
+            if (!TestArgs(args))
+                return;
 
-            } while (input != "END");
-            */
+            Sender sender = new Sender();
+            sender.Initialize(args[0], true, false, false);
+            sender.SendMessage(args[1]);
             sender.CloseConnection(); 
+        }
+
+        private static bool TestArgs(string[] args)
+        {
+            try
+            {
+                var t1 = args[0];
+                var t2 = args[1];
+                return true;
+            }
+            catch (System.IndexOutOfRangeException)
+            {
+                Console.WriteLine("Cmd line usage: send queueName message");
+                return false;
+            }
         }
     }
 }

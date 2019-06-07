@@ -10,5 +10,6 @@ namespace LogSubscriber
     {
         void Initialize(string exchange_name, string exchange_type);
         void BindQueue(string newExchange);
+        void CloseConnection();
     }
 }
