@@ -21,7 +21,7 @@ namespace Recieve
         public IBasicProperties _properties { get; protected set; }
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor - creates a new connection by default
         /// </summary>
         public Reciever()
         {

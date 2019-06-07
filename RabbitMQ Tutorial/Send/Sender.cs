@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using RabbitMQ.Client;
 
 namespace Send
@@ -17,7 +15,7 @@ namespace Send
         private IModel _channel;
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor - creates a new connection by default
         /// </summary>
         public Sender()
         {
