@@ -27,27 +27,26 @@ namespace PublishLog
             channel.ExchangeDeclare("direct_logs", "direct");
 
             //Get severity and message
-            var severity = "";
             switch (logType)
             {
                 case LogTypes.Info:
-                    severity = LogTypes.Info;
+                    logType = LogTypes.Info;
                     break;
                 case LogTypes.Warning:
-                    severity = LogTypes.Warning;
+                    logType = LogTypes.Warning;
                     break;
                 case LogTypes.Error:
-                    severity = LogTypes.Error;
+                    logType = LogTypes.Error;
                     break;
                 default:
-                    severity = LogTypes.Info;
+                    logType = LogTypes.Info;
                     break;
             }
 
             //Initialize Sender
             sender = new Sender(connection, channel);
             sender._exchange = "direct_logs";
-            sender.Initialize(severity);
+            sender.Initialize(logType);
         }
 
         public void PublishMessage(string message)
