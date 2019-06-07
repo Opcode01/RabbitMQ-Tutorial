@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using RabbitMQ.Client;
+using Util;
 
 namespace Send
 {
@@ -82,16 +83,11 @@ namespace Send
             Console.WriteLine("Connection Closed.");
         }
 
-        private static string ParseMessage(string[] args)
-        {
-            return ((args.Length > 0) ? string.Join(" ", args) : "Hello World!");
-        }
-
         public static void Main(string[] args)
         {
             Sender sender = new Sender();
             sender.Initialize("task_queue", true, false, false);
-            sender.SendMessage(ParseMessage(args));
+            sender.SendMessage(UtilMethods.ParseMessage(args));
             
             /*Console.WriteLine("Press [Enter] to send hello, or type 'END' to exit");
             string input = "";

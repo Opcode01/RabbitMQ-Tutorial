@@ -43,8 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogSubscriber.cs" />
+    <Compile Include="ErrorSubscriber.cs" />
+    <Compile Include="ILogSubscriber.cs" />
+    <Compile Include="InfoSubscriber.cs" />
+    <Compile Include="LogSubscriberBase.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WarningSubscriber.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -58,6 +63,10 @@
     <ProjectReference Include="..\Recieve\Recieve.csproj">
       <Project>{0d1dcbd0-4e9b-4038-84e7-22ad2f47a2f0}</Project>
       <Name>Recieve</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{01b869c5-d890-4032-b072-dc1d60f7483c}</Project>
+      <Name>Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
