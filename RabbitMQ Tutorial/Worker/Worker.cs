@@ -36,6 +36,7 @@ namespace Recieve
             {
                 ui = Console.ReadLine();
             }
+            worker.CloseConnection();
         }
 
     }

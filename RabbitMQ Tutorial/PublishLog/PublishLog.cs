@@ -7,17 +7,19 @@ namespace PublishLog
 {
     class PublishLog
     {
-        /// <summary>
-        /// Args[0] is the severity, args [1] is the message
-        /// </summary>
-        /// <param name="args"></param>
-        static void Main(string[] args)
-        {
-            if (!TestArgs(args))
-                return;
+        public string _hostname { get; set; } = "localhost";
+        private Sender sender;
 
+        public PublishLog()
+        {
+
+        }
+
+        public void Initialize(string logType)
+        {
             //Initialize Connection
             var factory = new ConnectionFactory();
+            factory.HostName = _hostname;
             var connection = factory.CreateConnection();
             var channel = connection.CreateModel();
 
@@ -25,8 +27,8 @@ namespace PublishLog
             channel.ExchangeDeclare("direct_logs", "direct");
 
             //Get severity and message
-            var severity = args[0];
-            switch (severity)
+            var severity = "";
+            switch (logType)
             {
                 case LogTypes.Info:
                     severity = LogTypes.Info;
@@ -41,18 +43,43 @@ namespace PublishLog
                     severity = LogTypes.Info;
                     break;
             }
-            var message = args[1];
 
             //Initialize Sender
-            Sender sender = new Sender(connection, channel);
+            sender = new Sender(connection, channel);
             sender._exchange = "direct_logs";
             sender.Initialize(severity);
+        }
+
+        public void PublishMessage(string message)
+        {
+            sender.SendMessage(message);
+        }
+
+        public void CloseConnection()
+        {
+            sender.CloseConnection();
+        }
+
+        /// <summary>
+        /// Args[0] is the severity, args [1] is the message
+        /// </summary>
+        /// <param name="args"></param>
+        static void Main(string[] args)
+        {
+            if (!TestArgs(args))
+                return;
+
+            var logPublisher = new PublishLog();
+            logPublisher.Initialize(args[0]);
+            var message = args[1];
 
             //Send message
-            sender.SendMessage(args[1]);
+            logPublisher.PublishMessage(args[1]);
+
+            //Console.ReadLine();
 
             //Close connection
-            sender.CloseConnection();
+            logPublisher.CloseConnection();
            
         }
 
