@@ -11,7 +11,7 @@ namespace Send
         public string _hostname { get; set; } = "localhost";
         public string _exchange { get; set; } = "";
         public IBasicProperties _properties { get; protected set; }
-        public string _queue { get; private set; }
+        public string _routingKey { get; private set; }
         private IConnection _connection;
         private IModel _channel;
 
@@ -54,12 +54,12 @@ namespace Send
             //Initialize Queue
             if (routingKey == "")
             {
-                _queue = _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args).QueueName; //Save the name of auto-generated queue
+                _routingKey = _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args).QueueName; //Save the name of auto-generated queue
             }
             else
             {
                 _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
-                _queue = routingKey;
+                _routingKey = routingKey;
             }
         }
 
@@ -71,7 +71,7 @@ namespace Send
         {
             var body = Encoding.UTF8.GetBytes(msg); //Message Payload
 
-            _channel.BasicPublish(_exchange, _queue, _properties, body); //Specify an exchange, or use an empty string for none. Use the name of the queue as the routing key.
+            _channel.BasicPublish(_exchange, _routingKey, _properties, body); //Specify an exchange, or use an empty string for none. Use the name of the queue as the routing key.
 
             Console.WriteLine(" [x] Sent {0}", msg);
         }

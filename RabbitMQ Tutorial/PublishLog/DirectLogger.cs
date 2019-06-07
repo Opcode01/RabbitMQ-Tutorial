@@ -5,26 +5,20 @@ using Util;
 
 namespace PublishLog
 {
-    public class Logger
+    public class DirectLogger : LoggerBase
     {
-        public string _hostname { get; set; } = "localhost";
-        private Sender sender;
-
-        public Logger()
+        public DirectLogger() : base()
         {
-
+            
         }
 
         public void Initialize(string logType)
         {
-            //Initialize Connection
-            var factory = new ConnectionFactory();
-            factory.HostName = _hostname;
-            var connection = factory.CreateConnection();
-            var channel = connection.CreateModel();
+            //Initialize Sender
+            _sender = new Sender(_connection, _channel);
 
             //Initialize exchange
-            channel.ExchangeDeclare("direct_logs", "direct");
+            _channel.ExchangeDeclare("direct_logs", "direct");
 
             //Get severity and message
             switch (logType)
@@ -43,21 +37,10 @@ namespace PublishLog
                     break;
             }
 
-            //Initialize Sender
-            sender = new Sender(connection, channel);
-            sender._exchange = "direct_logs";
-            sender.Initialize(logType);
+            _sender._exchange = "direct_logs";
+            _sender.Initialize(logType);
         }
 
-        public void PublishMessage(string message)
-        {
-            sender.SendMessage(message);
-        }
-
-        public void CloseConnection()
-        {
-            sender.CloseConnection();
-        }
 
         /// <summary>
         /// Args[0] is the severity, args [1] is the message
@@ -68,12 +51,12 @@ namespace PublishLog
             if (!TestArgs(args))
                 return;
 
-            var logPublisher = new Logger();
+            var logPublisher = new DirectLogger();
             logPublisher.Initialize(args[0]);
             var message = args[1];
 
             //Send message
-            logPublisher.PublishMessage(args[1]);
+            logPublisher.PublishMessage(message);
 
             //Console.ReadLine();
 
