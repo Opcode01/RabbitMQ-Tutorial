@@ -59,6 +59,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PublishLog\PublishLog.csproj">
+      <Project>{5D69BF15-9E3F-4338-A1F3-C534FFFCACD5}</Project>
+      <Name>PublishLog</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Recieve\Recieve.csproj">
       <Project>{0d1dcbd0-4e9b-4038-84e7-22ad2f47a2f0}</Project>
       <Name>Recieve</Name>
