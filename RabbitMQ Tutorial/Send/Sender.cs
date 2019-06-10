@@ -11,6 +11,7 @@ namespace Send
         public string _hostname { get; set; } = "localhost";
         public string _exchange { get; set; } = "";
         public IBasicProperties _properties { get; protected set; }
+        public bool runSilent { get; set; }
         public string _routingKey { get; private set; }
         private IConnection _connection;
         private IModel _channel;
@@ -73,14 +74,16 @@ namespace Send
 
             _channel.BasicPublish(_exchange, _routingKey, _properties, body); //Specify an exchange, or use an empty string for none. Use the name of the queue as the routing key.
 
-            Console.WriteLine(" [{0}] Sent : {1}", _routingKey, msg);
+            if(!runSilent)
+                Console.WriteLine(" [{0}] Sent : {1}", _routingKey, msg);
         }
 
         public void CloseConnection()
         {
             _channel.Close();
             _connection.Close();
-            Console.WriteLine("Connection Closed.");
+            if(!runSilent)
+                Console.WriteLine("Connection Closed.");
         }
 
         public static void Main(string[] args)

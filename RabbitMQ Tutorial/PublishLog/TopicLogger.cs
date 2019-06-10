@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 
 namespace PublishLog
 {
-    class TopicLogger : LoggerBase
+    public class TopicLogger : LoggerBase
     {
 
         public TopicLogger() : base()
@@ -12,11 +12,11 @@ namespace PublishLog
 
         }
 
-        public void Initialize(string routingKey)
+        public override void Initialize(string routingKey) 
         {
             //Initialize Sender
             _sender = new Sender(_connection, _channel);
-            
+
             //Initialize exchange
             _channel.ExchangeDeclare("topic_logs", "topic");
 

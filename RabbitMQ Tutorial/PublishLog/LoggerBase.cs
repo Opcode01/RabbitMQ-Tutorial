@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PublishLog
 {
-    public abstract class LoggerBase
+    public abstract class LoggerBase : ILogger
     {
         public string _hostname { get; set; } = "localhost";
         protected Sender _sender;
@@ -25,6 +25,13 @@ namespace PublishLog
             _channel = _connection.CreateModel();
         }
 
+        public virtual void Initialize(string routingKey)
+        {
+            //Initialize Sender
+            _sender = new Sender(_connection, _channel);
+
+        }
+
         public void PublishMessage(string message)
         {
             _sender.SendMessage(message);
@@ -33,6 +40,11 @@ namespace PublishLog
         public void CloseConnection()
         {
             _sender.CloseConnection();
+        }
+
+        public void SetSilent(bool s)
+        {
+            _sender.runSilent = s;
         }
     }
 }

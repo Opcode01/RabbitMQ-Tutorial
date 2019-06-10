@@ -12,6 +12,8 @@ namespace Recieve
 
         public string _queue { get; private set; }
 
+        public bool runSilent { get; set; }
+
         protected IConnection _connection;
 
         protected IModel _channel;
@@ -69,7 +71,8 @@ namespace Recieve
 
             //Create a callback function to execute when a message is recieved
             consumer.Received += OnMessageRecieved;
-            Console.WriteLine("Waiting for messages...");
+            if(!runSilent)
+                Console.WriteLine("Waiting for messages...");
 
             _channel.BasicConsume(_queue, false, consumer);
         }
@@ -83,14 +86,16 @@ namespace Recieve
 
             _channel.Close();
             _connection.Close();
-            Console.WriteLine("Connection closed.");
+            if(!runSilent)
+                Console.WriteLine("Connection closed.");
         }
 
         public virtual void OnMessageRecieved(object sender, BasicDeliverEventArgs e)
         {
             var body = e.Body;
             var message = Encoding.UTF8.GetString(body);
-            Console.WriteLine(" [{0}] Recieved {1}", sender, message);
+            if(!runSilent)
+                Console.WriteLine(" [{0}] Recieved {1}", sender, message);
             _channel.BasicAck(e.DeliveryTag, false);
         }
         

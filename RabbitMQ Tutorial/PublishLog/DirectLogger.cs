@@ -12,7 +12,7 @@ namespace PublishLog
             
         }
 
-        public void Initialize(string logType)
+        public override void Initialize(string logType)
         {
             //Initialize Sender
             _sender = new Sender(_connection, _channel);

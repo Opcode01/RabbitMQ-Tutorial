@@ -69,7 +69,9 @@ namespace LogSubscriber
             {
                 sub.CloseConnection();
             }
-            return;
+
+            //Really not sure why this isn't closing automatically
+            Environment.Exit(1);
         }
     }
 }
