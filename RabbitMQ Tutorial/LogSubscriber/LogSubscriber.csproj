@@ -49,6 +49,7 @@
     <Compile Include="LogSubscriberBase.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TopicSubscriber.cs" />
     <Compile Include="WarningSubscriber.cs" />
   </ItemGroup>
   <ItemGroup>

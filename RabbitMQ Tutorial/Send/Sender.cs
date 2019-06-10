@@ -73,7 +73,7 @@ namespace Send
 
             _channel.BasicPublish(_exchange, _routingKey, _properties, body); //Specify an exchange, or use an empty string for none. Use the name of the queue as the routing key.
 
-            Console.WriteLine(" [x] Sent {0}", msg);
+            Console.WriteLine(" [{0}] Sent : {1}", _routingKey, msg);
         }
 
         public void CloseConnection()

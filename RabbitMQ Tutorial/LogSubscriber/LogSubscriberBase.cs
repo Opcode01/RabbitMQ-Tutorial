@@ -18,6 +18,10 @@ namespace LogSubscriber
             _channel.QueueBind(_reciever._queue, _exchange_name, Util.LogTypes.Info);
         }
 
+        public virtual void BindQueue(string newExchange, string bindingKey) {
+            //Method must be overridden by sub class
+        }
+
         public void Initialize(string exchange_name, string exchange_type)
         {
             //Initialize Connection
@@ -33,7 +37,7 @@ namespace LogSubscriber
             _reciever = new LogReciever(connection, _channel);
             _reciever.Initialize();
 
-            BindQueue(_exchange_name);
+            //BindQueue(_exchange_name);
         }
 
         public void CloseConnection()
