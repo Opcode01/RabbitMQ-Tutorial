@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSubscriber", "LogSubscri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util", "Util\Util.csproj", "{01B869C5-D890-4032-B072-DC1D60F7483C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPClient", "RPClient\RPClient.csproj", "{AFE3FA72-C6B6-49A0-9003-875D028796D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPCServer", "RPCServer\RPCServer.csproj", "{A2EA6969-EC0C-46BA-BE85-60DA285862A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{01B869C5-D890-4032-B072-DC1D60F7483C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01B869C5-D890-4032-B072-DC1D60F7483C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01B869C5-D890-4032-B072-DC1D60F7483C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE3FA72-C6B6-49A0-9003-875D028796D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE3FA72-C6B6-49A0-9003-875D028796D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE3FA72-C6B6-49A0-9003-875D028796D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE3FA72-C6B6-49A0-9003-875D028796D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2EA6969-EC0C-46BA-BE85-60DA285862A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2EA6969-EC0C-46BA-BE85-60DA285862A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2EA6969-EC0C-46BA-BE85-60DA285862A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2EA6969-EC0C-46BA-BE85-60DA285862A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
