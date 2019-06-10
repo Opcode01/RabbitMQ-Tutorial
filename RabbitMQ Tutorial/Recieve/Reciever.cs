@@ -17,7 +17,7 @@ namespace Recieve
         protected IConnection _connection;
 
         protected IModel _channel;
-        public IBasicProperties _properties { get; protected set; }
+        public IBasicProperties _properties { get; set; }
 
         /// <summary>
         /// Default constructor - creates a new connection by default

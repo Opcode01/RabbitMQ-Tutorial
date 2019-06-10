@@ -10,7 +10,7 @@ namespace Send
     {
         public string _hostname { get; set; } = "localhost";
         public string _exchange { get; set; } = "";
-        public IBasicProperties _properties { get; protected set; }
+        public IBasicProperties _properties { get; set; }
         public bool runSilent { get; set; }
         public string _routingKey { get; private set; }
         private IConnection _connection;

@@ -6,18 +6,15 @@ using System.Threading.Tasks;
 
 namespace RPCServer
 {
+    /// <summary>
+    /// Recieves jobs from the rpc_queue
+    /// </summary>
     class RPCServer
     {
-
-        private static int fib(int n)
-        {
-            if (n == 0 || n == 1) return n;
-            return fib(n - 1) + fib(n - 2);
-        }
-
         static void Main(string[] args)
         {
-
+            var rpcReciever = new RPCServerReciever();
+            rpcReciever.Initialize("rpc_queue", false, false, false);
         }
     }
 }
