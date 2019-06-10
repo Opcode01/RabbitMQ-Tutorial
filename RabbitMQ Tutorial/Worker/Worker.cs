@@ -17,7 +17,7 @@ namespace Recieve
             if(!runSilent)
                 Console.WriteLine(" [y] Recieved {0}", message);
             if (_logger != null)
-                _logger.PublishMessage($"[{this.ToString()}] Recieved {message}");
+                _logger.PublishMessage($"[{this.ToString()}.INFO] Recieved {message}");
 
             int dots = message.Split('.').Length - 1;
             DoWork(dots);
@@ -29,14 +29,14 @@ namespace Recieve
             if(!runSilent)
                 Console.WriteLine("Doing {0} units of work", work);
             if (_logger != null)
-                _logger.PublishMessage($"[{this.ToString()}] doing {work} units of work");
+                _logger.PublishMessage($"[{this.ToString()}.INFO] doing {work} units of work");
 
             Thread.Sleep(work * 1000);
 
             if(!runSilent)
                 Console.WriteLine(" [y] Done!");
             if (_logger != null)
-                _logger.PublishMessage($"[{this.ToString()}] has finished.");
+                _logger.PublishMessage($"[{this.ToString()}.INFO] has finished.");
         }
 
         public void EnableLogging()
@@ -50,8 +50,9 @@ namespace Recieve
         {
             Worker worker = new Worker();
             Console.WriteLine("Type [END] and press enter to exit.");
-            worker.Initialize("task_queue", true, false, false);
             worker.EnableLogging();
+            worker.Initialize("task_queue", true, false, false);
+            
 
             string ui = "";
             while (ui != "END")

@@ -42,19 +42,19 @@ namespace RPCServer
                 long n = long.Parse(message);
                 if (!runSilent)
                     Console.WriteLine(" [.] fib({0})", message);
-                _loggerInfo.PublishMessage($"[{this.ToString()}] was called with fib({message})");
+                _loggerInfo.PublishMessage($"[{this.ToString()}.INFO] was called with fib({message})");
                 response = fib(n).ToString();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(" [.] " + ex.Message);
-                _loggerError.PublishMessage($"[{this.ToString()}] encountered an error\n {ex.Message}");
+                _loggerError.PublishMessage($"[{this.ToString()}.ERROR] encountered an error\n {ex.Message}");
                 response = "";
             }
             finally
             {
                 Console.WriteLine(" [.] Done!");
-                _loggerInfo.PublishMessage($"[{this.ToString()}] has finished.");
+                _loggerInfo.PublishMessage($"[{this.ToString()}.INFO] has finished.");
                 var responseBytes = Encoding.UTF8.GetBytes(response);
                 _channel.BasicPublish("", properties.ReplyTo, replyProperties, responseBytes);
                 _channel.BasicAck(e.DeliveryTag, false);
