@@ -17,7 +17,7 @@ namespace Recieve
             if(!runSilent)
                 Console.WriteLine(" [y] Recieved {0}", message);
             if (_logger != null)
-                _logger.PublishMessage($"[{this.ToString()}] Recieved {message}");
+                _logger.PublishMessage($"[{this.ToString()}] Recieved {message}", $"{this.ToString()}.{Util.LogTypes.Info}" );
 
             int dots = message.Split('.').Length - 1;
             DoWork(dots);
@@ -29,14 +29,14 @@ namespace Recieve
             if(!runSilent)
                 Console.WriteLine("Doing {0} units of work", work);
             if (_logger != null)
-                _logger.PublishMessage($"[{this.ToString()}] doing {work} units of work");
+                _logger.PublishMessage($"[{this.ToString()}] doing {work} units of work", $"{this.ToString()}.{Util.LogTypes.Info}");
 
             Thread.Sleep(work * 1000);
 
             if(!runSilent)
                 Console.WriteLine(" [y] Done!");
             if (_logger != null)
-                _logger.PublishMessage($"[{this.ToString()}] has finished.");
+                _logger.PublishMessage($"[{this.ToString()}] has finished.", $"{this.ToString()}.{Util.LogTypes.Info}");
         }
 
         public void EnableLogging()

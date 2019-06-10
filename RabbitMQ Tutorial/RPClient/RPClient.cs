@@ -20,7 +20,7 @@ namespace RPClient
         {
             //Initialize sender
             _sender = new Sender();
-            _sender.Initialize("rpc_queue", false, false, false);
+            _sender.Initialize("rpc_queue", false, false, true);
 
             //Iniitalize reciever
             _reciever = new RPClientReciever(respQueue);

@@ -8,7 +8,8 @@
         static void Main(string[] args)
         {
             var rpcReciever = new RPCServerReciever();
-            rpcReciever.Initialize("rpc_queue", false, false, false);
+            rpcReciever.Initialize("rpc_queue", false, false, true);
+            rpcReciever.EnableLogging();
         }
     }
 }

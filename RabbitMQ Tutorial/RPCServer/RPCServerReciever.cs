@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using PublishLog;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Recieve;
@@ -11,6 +12,15 @@ namespace RPCServer
     /// </summary>
     public class RPCServerReciever : Reciever
     {
+        private ILogger _logger;
+
+        public void EnableLogging()
+        {
+            _logger = new TopicLogger();
+            _logger.Initialize("RPCServer.info");
+            _logger.SetSilent(true);
+        }
+
         public override void OnMessageRecieved(object sender, BasicDeliverEventArgs e)
         {
             string response = null;
@@ -27,16 +37,20 @@ namespace RPCServer
                 long n = long.Parse(message);
                 if (!runSilent)
                     Console.WriteLine(" [.] fib({0})", message);
+                _logger.PublishMessage($"[{this.ToString()}] recieved call for fib({message})", $"{this.ToString()}.{Util.LogTypes.Info}");
                 response = fib(n).ToString();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(" [.] " + ex.Message);
+                _logger.PublishMessage($"[{this.ToString()}] encountered an error {ex.Message}", $"{this.ToString()}.{Util.LogTypes.Error}");
                 response = "";
             }
             finally
             {
-                Console.WriteLine(" [.] Done!");
+                if(!runSilent)
+                    Console.WriteLine(" [.] Done!");
+                _logger.PublishMessage($"[{this.ToString()}] has finished.", $"{this.ToString()}.{Util.LogTypes.Info}");
                 var responseBytes = Encoding.UTF8.GetBytes(response);
                 _channel.BasicPublish("", properties.ReplyTo, replyProperties, responseBytes);
                 _channel.BasicAck(e.DeliveryTag, false);

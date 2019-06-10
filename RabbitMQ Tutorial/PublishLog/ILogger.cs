@@ -8,7 +8,7 @@ namespace PublishLog
 {
     public interface ILogger
     {
-        void PublishMessage(string message);
+        void PublishMessage(string message, string severity);
 
         void CloseConnection();
 

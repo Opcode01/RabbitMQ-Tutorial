@@ -22,7 +22,7 @@ namespace PublishLog
             var message = args[1];
 
             //Send message
-            logPublisher.PublishMessage(message);
+            logPublisher.PublishMessage(message, args[0]);
 
             //Console.ReadLine();
 

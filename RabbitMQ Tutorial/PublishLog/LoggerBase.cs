@@ -32,10 +32,18 @@ namespace PublishLog
 
         }
 
-        public void PublishMessage(string message)
+        public void PublishMessage(string message, string severity)
         {
+            if(severity != _sender._routingKey)
+            {
+                _sender.CloseConnection();
+                _sender = new Sender(_connection, _channel);
+                _sender.Initialize(severity);
+            }
             _sender.SendMessage(message);
         }
+
+        
 
         public void CloseConnection()
         {
