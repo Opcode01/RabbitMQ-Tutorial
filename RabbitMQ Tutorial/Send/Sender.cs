@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using RabbitMQ.Client;
-using Util;
 
 namespace Send
 {
