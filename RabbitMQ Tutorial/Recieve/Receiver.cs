@@ -4,9 +4,9 @@ using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Recieve
+namespace Receive
 {
-    public class Reciever
+    public class Receiver
     {
         protected string _hostname { get; set; } = "localhost";
 
@@ -22,7 +22,7 @@ namespace Recieve
         /// <summary>
         /// Default constructor - creates a new connection by default
         /// </summary>
-        public Reciever()
+        public Receiver()
         {
             //Create a connection to the server
             var factory = new ConnectionFactory();
@@ -36,7 +36,7 @@ namespace Recieve
         /// </summary>
         /// <param name="connection"></param>
         /// <param name="model"></param>
-        public Reciever(IConnection connection, IModel model)
+        public Receiver(IConnection connection, IModel model)
         {
             _connection = connection;
             _channel = model;

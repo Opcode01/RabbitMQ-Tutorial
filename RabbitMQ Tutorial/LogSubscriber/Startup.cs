@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using RabbitMQ.Client;
-using Recieve;
+using Receive;
 
 namespace LogSubscriber
 {

@@ -1,15 +1,15 @@
 ﻿using System.Text;
-using Recieve;
+using Receive;
 using RabbitMQ.Client.Events;
 using System.Collections.Concurrent;
 
 namespace RPClient
 {
-    public class RPClientReciever : Reciever
+    public class RPClientReceiver : Receiver
     {
         private BlockingCollection<string> _responseQueue;
 
-        public RPClientReciever(BlockingCollection<string> responseQueue)
+        public RPClientReceiver(BlockingCollection<string> responseQueue)
         {
             _responseQueue = responseQueue;
         }

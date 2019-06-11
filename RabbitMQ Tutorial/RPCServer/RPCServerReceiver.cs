@@ -3,14 +3,14 @@ using System.Text;
 using PublishLog;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Recieve;
+using Receive;
 
 namespace RPCServer
 {
     /// <summary>
     /// Overrides the basic reciever to send response messages back to the original caller
     /// </summary>
-    public class RPCServerReciever : Reciever
+    public class RPCServerReceiver : Receiver
     {
         private ILogger _loggerInfo;
 

@@ -4,9 +4,9 @@ using RabbitMQ.Client.Events;
 using System.Threading;
 using PublishLog;
 
-namespace Recieve
+namespace Receive
 {
-    public class Worker : Reciever
+    public class Worker : Receiver
     {
         private ILogger _logger;
 

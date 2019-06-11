@@ -61,9 +61,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Recieve\Recieve.csproj">
+    <ProjectReference Include="..\Recieve\Receive.csproj">
       <Project>{0d1dcbd0-4e9b-4038-84e7-22ad2f47a2f0}</Project>
-      <Name>Recieve</Name>
+      <Name>Receive</Name>
     </ProjectReference>
     <ProjectReference Include="..\Util\Util.csproj">
       <Project>{01b869c5-d890-4032-b072-dc1d60f7483c}</Project>

@@ -1,5 +1,5 @@
 ﻿using RabbitMQ.Client;
-using Recieve;
+using Receive;
 
 namespace LogSubscriber
 {
@@ -7,7 +7,7 @@ namespace LogSubscriber
     {
         protected IModel _channel;
 
-        protected LogReciever _reciever;
+        protected LogReceiver _reciever;
 
         protected string _exchange_name;
 
@@ -34,7 +34,7 @@ namespace LogSubscriber
             _channel.ExchangeDeclare(_exchange_name, exchange_type);
 
             //Initialize Reciever
-            _reciever = new LogReciever(connection, _channel);
+            _reciever = new LogReceiver(connection, _channel);
             _reciever.Initialize();
 
             //BindQueue(_exchange_name);

@@ -57,9 +57,9 @@
       <Project>{5d69bf15-9e3f-4338-a1f3-c534fffcacd5}</Project>
       <Name>PublishLog</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Recieve\Recieve.csproj">
+    <ProjectReference Include="..\Recieve\Receive.csproj">
       <Project>{0d1dcbd0-4e9b-4038-84e7-22ad2f47a2f0}</Project>
-      <Name>Recieve</Name>
+      <Name>Receive</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

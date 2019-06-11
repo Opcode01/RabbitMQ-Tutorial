@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Recieve
+namespace Receive
 {
-    public class LogReciever : Reciever
+    public class LogReceiver : Receiver
     {
         public string log_type { get; set; }
 
-        public LogReciever(IConnection connection, IModel model)
+        public LogReceiver(IConnection connection, IModel model)
         {
             _connection = connection;
             _channel = model;

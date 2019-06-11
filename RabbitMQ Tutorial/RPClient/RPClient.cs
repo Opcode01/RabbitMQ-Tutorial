@@ -1,7 +1,7 @@
 ﻿using System;
 using Send;
 using System.Collections.Concurrent;
-using Recieve;
+using Receive;
 
 namespace RPClient
 {
@@ -11,7 +11,7 @@ namespace RPClient
 
         private Sender _sender;
 
-        private Reciever _reciever;
+        private Receiver _reciever;
 
         /// <summary>
         /// Sends a message and then blocks until it recieves a response
@@ -23,7 +23,7 @@ namespace RPClient
             _sender.Initialize("rpc_queue", false, false, false);
 
             //Iniitalize reciever
-            _reciever = new RPClientReciever(respQueue);
+            _reciever = new RPClientReceiver(respQueue);
             _reciever.Initialize();
 
             //Set sender properties

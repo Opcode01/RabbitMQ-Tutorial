@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="RPClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RPClientReciever.cs" />
+    <Compile Include="RPClientReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -56,9 +56,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Recieve\Recieve.csproj">
+    <ProjectReference Include="..\Recieve\Receive.csproj">
       <Project>{0d1dcbd0-4e9b-4038-84e7-22ad2f47a2f0}</Project>
-      <Name>Recieve</Name>
+      <Name>Receive</Name>
     </ProjectReference>
     <ProjectReference Include="..\Send\Send.csproj">
       <Project>{9dadfe9f-d459-420a-9590-d94ed0eb6471}</Project>
