@@ -21,7 +21,7 @@ namespace PublishLog
             _channel.ExchangeDeclare("topic_logs", "topic");
 
             _sender._exchange = "topic_logs";
-            _sender.Initialize(routingKey);
+            _sender.Initialize(routingKey, false, false, true);
         }
 
     }
