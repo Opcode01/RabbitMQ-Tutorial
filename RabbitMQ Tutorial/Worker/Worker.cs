@@ -10,6 +10,15 @@ namespace Receive
     {
         private ILogger _logger;
 
+        private string _id;
+
+        public Worker()
+        {
+            _id = "[" + this.ToString() + "." + Guid.NewGuid() + ".INFO]";
+        }
+
+        
+
         public override void OnMessageRecieved(object sender, BasicDeliverEventArgs e)
         {
             var body = e.Body;
@@ -17,7 +26,7 @@ namespace Receive
             if(!runSilent)
                 Console.WriteLine(" [y] Recieved {0}", message);
             if (_logger != null)
-                _logger.PublishMessage($"[{this.ToString()}.INFO] Recieved {message}");
+                _logger.PublishMessage($"{_id} Recieved {message}");
 
             int dots = message.Split('.').Length - 1;
             DoWork(dots);
@@ -29,14 +38,14 @@ namespace Receive
             if(!runSilent)
                 Console.WriteLine("Doing {0} units of work", work);
             if (_logger != null)
-                _logger.PublishMessage($"[{this.ToString()}.INFO] doing {work} units of work");
+                _logger.PublishMessage($"{_id} doing {work} units of work");
 
             Thread.Sleep(work * 1000);
 
             if(!runSilent)
                 Console.WriteLine(" [y] Done!");
             if (_logger != null)
-                _logger.PublishMessage($"[{this.ToString()}.INFO] has finished.");
+                _logger.PublishMessage($"{_id} has finished.");
         }
 
         public void EnableLogging()
