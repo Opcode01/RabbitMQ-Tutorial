@@ -50,17 +50,21 @@ namespace Send
         {
             if(_properties == null)
                 _properties = _channel.CreateBasicProperties();
-               
-            //Initialize Queue
-            if (routingKey == "")
+
+            //We only need to create a queue if there is no exchange, otherwise we publish directly to the exchange
+            if (_exchange == "")
             {
-                _routingKey = _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args).QueueName; //Save the name of auto-generated queue
+                //Initialize Queue
+                if (routingKey == "")
+                {
+                    _routingKey = _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args).QueueName; //Save the name of auto-generated queue
+                }
+                else
+                {
+                    _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
+                }
             }
-            else
-            {
-                _channel.QueueDeclare(routingKey, durable, exclusive, autoDelete, args);
-                _routingKey = routingKey;
-            }
+            _routingKey = routingKey;
         }
 
         /// <summary>
